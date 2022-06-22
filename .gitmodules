@@ -1,3 +1,0 @@
-[submodule "ionos-ansible-dynamic-inventory"]
-	path = ionos-ansible-dynamic-inventory
-	url = ssh://github.com/0dataloss/ionos-ansible-dynamic-inventory.git
