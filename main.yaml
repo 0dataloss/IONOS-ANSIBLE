@@ -1,6 +1,6 @@
 ---
   - name: Playbook
-    hosts: all
+    hosts: matteo
     become: yes
     become_user: root
     tasks:
@@ -22,16 +22,26 @@
           src: ./testfile.txt       # Jenkins
           dest: /root/testfile.txt  # Server Host
       - name: shell execute tests
-        ansible.builtin.shell:
-          cmd: ls -R >> /root/ciccio.txt
-          chdir: /var/log/
+        ansible.builtin.command:
+          argv:
+            - ls
+            - /var/log
+            - -R
+        register: lsOutput
+      - name: copy output to file
+        copy:
+          content: "{{ lsOutput.stdout }}"
+          dest: /root/ciccio.txt
       - name: Fetch risultati
         ansible.builtin.fetch:
           src: /root/ciccio.txt     # Fetch filed from Remote
-          dest: /root/ciccio.txt    # Copy files to Local (Jenkins)
+          dest: ciccio.txt    # Copy files to Local (Jenkins)
+          flat: yes
       - name: shell
+        become: no
         local_action:
-          ansible.builtin.shell:
-          cmd: cat /root/ciccio.txt
-
-      
+          module: ansible.builtin.command
+          argv:
+            - cat
+            - ciccio.txt
+            
