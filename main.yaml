@@ -17,3 +17,21 @@
             - net-tools
             - git
             - uuid
+      - name: Copia File di test da local a Remote
+        ansible.builtin.copy:
+          src: ./testfile.txt       # Jenkins
+          dest: /root/testfile.txt  # Server Host
+      - name: shell execute tests
+        ansible.builtin.shell:
+        cmd: ls -R >> /root/ciccio.txt
+        chdir: /var/log/
+      - name: Fetch risultati
+        ansible.builtin.fetch:
+          src: /root/ciccio.txt     # Fetch filed from Remote
+          dest: /root/ciccio.txt    # Copy files to Local (Jenkins)
+      - name: shell
+        local_action:
+          ansible.builtin.shell:
+          cmd: cat /root/ciccio.txt
+
+      
