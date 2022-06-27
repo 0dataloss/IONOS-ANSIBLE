@@ -4,10 +4,12 @@
     become: yes
     become_user: root
     tasks:
-      - name: Chaeck if there are lables called Name for this server
-        ansible.builtin.uri:
-          url:  https://api.ionos.com/cloudapi/v6/datacenters/3539909a-d02e-4c09-93a7-a9a4723ef30b/servers/5e545b91-8b18-4d05-8df3-dd51318fdc5b/labels/
-          method: GET
-          return_content: yes
-          headers: 
-            Authorization: Bearer "{{ TOKEN }}"
+      - name: Install apache packages
+        apt:
+          pkg:
+            - nginx
+            - psmisc
+            - vim
+            - net-tools
+            - git
+            - uuid
