@@ -4,7 +4,11 @@
     become: yes
     become_user: root
     tasks:
-      - name: Install apache packages
+      - name: apt-get update
+        apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+      - name: apt-get upgrade
+        apt: upgrade=dist force_apt_get=yes
+      - name: Install nginx packages
         apt:
           pkg:
             - nginx
